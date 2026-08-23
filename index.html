@@ -1,0 +1,1180 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>우리 학교 구석구석</title>
+  <style>
+    :root {
+      --paper: #fffaf0;
+      --panel: #ffffff;
+      --ink: #334155;
+      --muted: #64748b;
+      --sky: #7dd3fc;
+      --mint: #86efac;
+      --peach: #fdba74;
+      --pink: #f9a8d4;
+      --yellow: #fde68a;
+      --line: #d9edf7;
+      --shadow: 0 18px 40px rgba(51, 65, 85, 0.14);
+      --radius: 24px;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(125, 211, 252, 0.35) 0 110px, transparent 112px),
+        radial-gradient(circle at 92% 18%, rgba(249, 168, 212, 0.32) 0 120px, transparent 122px),
+        linear-gradient(135deg, #fff7ed 0%, #f0f9ff 48%, #f7fee7 100%);
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 26px 0 34px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 4px solid #ffffff;
+      border-radius: 18px;
+      background:
+        linear-gradient(45deg, transparent 42%, rgba(255, 255, 255, 0.75) 43% 57%, transparent 58%),
+        linear-gradient(135deg, var(--sky), var(--mint));
+      box-shadow: 0 10px 22px rgba(14, 165, 233, 0.18);
+      position: relative;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: #ffffff;
+      border-radius: 999px;
+    }
+
+    .brand-mark::before {
+      width: 28px;
+      height: 8px;
+      transform: rotate(-28deg);
+    }
+
+    .brand-mark::after {
+      width: 8px;
+      height: 28px;
+      transform: rotate(-28deg);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.7vw, 2.5rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+      border-radius: 14px;
+      outline: none;
+      padding: 3px 6px;
+      margin-left: -6px;
+      transition: background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    h1:hover,
+    h1:focus {
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.24);
+    }
+
+    h1:empty::before {
+      content: "우리 학교 구석구석";
+      color: #94a3b8;
+    }
+
+    .top p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .count-badge {
+      flex: 0 0 auto;
+      min-width: 94px;
+      padding: 12px 14px;
+      border: 3px solid #ffffff;
+      border-radius: 20px;
+      background: var(--yellow);
+      text-align: center;
+      box-shadow: 0 9px 18px rgba(245, 158, 11, 0.15);
+      font-weight: 900;
+    }
+
+    .count-badge span {
+      display: block;
+      margin-top: 2px;
+      font-size: 1.55rem;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel,
+    .gallery-wrap {
+      border: 4px solid #ffffff;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      position: sticky;
+      top: 18px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 18px 18px 14px;
+      background: linear-gradient(135deg, #bae6fd, #bbf7d0);
+      border-bottom: 3px dashed rgba(51, 65, 85, 0.16);
+    }
+
+    .panel-header h2,
+    .gallery-title h2 {
+      margin: 0;
+      font-size: 1.22rem;
+      letter-spacing: 0;
+    }
+
+    .panel-header p,
+    .gallery-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 700;
+    }
+
+    form {
+      padding: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 0.93rem;
+      font-weight: 900;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 13px;
+      border: 2px solid var(--line);
+      border-radius: 15px;
+      background: #f8fdff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    input:focus {
+      border-color: #38bdf8;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+    }
+
+    .drop-zone {
+      display: grid;
+      place-items: center;
+      min-height: 190px;
+      padding: 16px;
+      border: 3px dashed #93c5fd;
+      border-radius: 20px;
+      background:
+        linear-gradient(135deg, rgba(219, 234, 254, 0.7), rgba(254, 243, 199, 0.72));
+      text-align: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragging {
+      transform: translateY(-2px);
+      border-color: #fb7185;
+      background: linear-gradient(135deg, rgba(224, 242, 254, 0.95), rgba(255, 237, 213, 0.95));
+    }
+
+    .drop-zone input {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .upload-empty {
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .upload-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: inset 0 -5px 0 rgba(125, 211, 252, 0.24);
+      position: relative;
+    }
+
+    .upload-icon::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 18px;
+      width: 28px;
+      height: 22px;
+      border: 4px solid #38bdf8;
+      border-top: 0;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .upload-icon::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      top: 12px;
+      width: 14px;
+      height: 14px;
+      border-left: 4px solid #fb7185;
+      border-top: 4px solid #fb7185;
+      transform: rotate(45deg);
+    }
+
+    .preview {
+      display: none;
+      width: 100%;
+    }
+
+    .preview.active {
+      display: block;
+    }
+
+    .preview img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 15px;
+      display: block;
+      border: 3px solid #ffffff;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+    }
+
+    .preview-name {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 17px;
+      min-height: 48px;
+      padding: 12px 16px;
+      color: #253247;
+      font: inherit;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(51, 65, 85, 0.12);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 22px rgba(51, 65, 85, 0.16);
+    }
+
+    button:active {
+      transform: translateY(0);
+      filter: brightness(0.98);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #fdba74, #f9a8d4);
+    }
+
+    .secondary {
+      background: #e0f2fe;
+      min-width: 52px;
+    }
+
+    .notice {
+      display: none;
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 14px;
+      background: #fff1f2;
+      color: #be123c;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
+    .notice.show {
+      display: block;
+    }
+
+    .gallery-wrap {
+      min-height: 640px;
+      padding: 20px;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.9)),
+        repeating-linear-gradient(0deg, transparent 0 35px, rgba(125, 211, 252, 0.18) 36px 38px),
+        repeating-linear-gradient(90deg, transparent 0 35px, rgba(134, 239, 172, 0.16) 36px 38px);
+    }
+
+    .gallery-title {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .gallery-title strong {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.9rem;
+      box-shadow: inset 0 -3px 0 rgba(251, 191, 36, 0.3);
+    }
+
+    .empty-state {
+      display: grid;
+      place-items: center;
+      min-height: 500px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .empty-card {
+      width: min(410px, 100%);
+      padding: 26px;
+      border: 3px dashed #bae6fd;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .empty-picture {
+      width: 128px;
+      height: 92px;
+      margin: 0 auto 14px;
+      border: 5px solid #ffffff;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 78% 24%, #facc15 0 13px, transparent 14px),
+        linear-gradient(135deg, #bae6fd 0 52%, #bbf7d0 53% 100%);
+      box-shadow: 0 12px 24px rgba(14, 165, 233, 0.15);
+      position: relative;
+    }
+
+    .empty-picture::before,
+    .empty-picture::after {
+      content: "";
+      position: absolute;
+      bottom: 10px;
+      width: 54px;
+      height: 34px;
+      border-radius: 999px 999px 10px 10px;
+      background: #86efac;
+    }
+
+    .empty-picture::before {
+      left: 16px;
+      transform: rotate(-8deg);
+    }
+
+    .empty-picture::after {
+      right: 13px;
+      background: #34d399;
+      transform: rotate(8deg);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      appearance: none;
+      width: 100%;
+      min-height: 0;
+      padding: 0;
+      border: 3px solid #ffffff;
+      border-radius: 20px;
+      background: #ffffff;
+      overflow: hidden;
+      text-align: left;
+      box-shadow: 0 12px 24px rgba(51, 65, 85, 0.12);
+    }
+
+    .card:hover img {
+      transform: scale(1.035);
+    }
+
+    .thumb {
+      position: relative;
+      overflow: hidden;
+      background: #e0f2fe;
+    }
+
+    .thumb img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+
+    .zoom-hint {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      min-width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 14px rgba(15, 23, 42, 0.18);
+    }
+
+    .zoom-hint::before {
+      content: "";
+      width: 15px;
+      height: 15px;
+      border: 3px solid #38bdf8;
+      border-radius: 50%;
+      box-shadow: 9px 9px 0 -5px #fb7185;
+    }
+
+    .delete-card {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 38px;
+      min-height: 38px;
+      padding: 0;
+      border: 3px solid #ffffff;
+      border-radius: 14px;
+      background: #ffe4e6;
+      box-shadow: 0 8px 14px rgba(15, 23, 42, 0.18);
+    }
+
+    .delete-card::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 14px;
+      width: 12px;
+      height: 14px;
+      border: 3px solid #e11d48;
+      border-top: 0;
+      border-radius: 0 0 4px 4px;
+      background: transparent;
+    }
+
+    .delete-card::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 9px;
+      width: 18px;
+      height: 4px;
+      border-radius: 999px;
+      background: #e11d48;
+    }
+
+    .delete-card span {
+      position: absolute;
+      left: 15px;
+      top: 6px;
+      width: 8px;
+      height: 3px;
+      border-radius: 999px;
+      background: #e11d48;
+    }
+
+    .card-info {
+      padding: 13px 14px 15px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      max-width: 100%;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #ecfccb;
+      color: #3f6212;
+      font-size: 0.8rem;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .pill.date {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      padding: 22px;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal.show {
+      display: grid;
+      place-items: center;
+    }
+
+    .modal-card {
+      width: min(920px, 100%);
+      max-height: calc(100vh - 44px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 4px solid #ffffff;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+    }
+
+    .modal-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #fef3c7, #d9f99d);
+    }
+
+    .modal-title {
+      min-width: 0;
+    }
+
+    .modal-title h3 {
+      margin: 0;
+      font-size: 1.15rem;
+      overflow-wrap: anywhere;
+    }
+
+    .modal-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex: 0 0 auto;
+      gap: 8px;
+    }
+
+    .modal-delete,
+    .close {
+      flex: 0 0 auto;
+      width: 46px;
+      min-height: 46px;
+      padding: 0;
+      background: #ffffff;
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .modal-delete::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 18px;
+      width: 14px;
+      height: 16px;
+      border: 3px solid #e11d48;
+      border-top: 0;
+      border-radius: 0 0 5px 5px;
+    }
+
+    .modal-delete::after {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 13px;
+      width: 22px;
+      height: 4px;
+      border-radius: 999px;
+      background: #e11d48;
+      box-shadow: 7px -5px 0 -2px #e11d48;
+    }
+
+    .close::before,
+    .close::after {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 21px;
+      width: 18px;
+      height: 4px;
+      border-radius: 999px;
+      background: #fb7185;
+    }
+
+    .close::before {
+      transform: rotate(45deg);
+    }
+
+    .close::after {
+      transform: rotate(-45deg);
+    }
+
+    .modal-image-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 0;
+      background: #f8fafc;
+    }
+
+    .modal-image-wrap img {
+      max-width: 100%;
+      max-height: calc(100vh - 178px);
+      display: block;
+      object-fit: contain;
+    }
+
+    .modal-bottom {
+      padding: 12px 16px;
+      color: var(--muted);
+      font-weight: 800;
+      background: #ffffff;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 860px) {
+      .top {
+        align-items: flex-start;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        position: static;
+      }
+
+      .gallery-wrap {
+        min-height: 420px;
+      }
+
+      .empty-state {
+        min-height: 300px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 18px, 1180px);
+        padding-top: 14px;
+      }
+
+      .top {
+        display: grid;
+      }
+
+      .brand-mark {
+        width: 50px;
+        height: 50px;
+      }
+
+      .count-badge {
+        width: 100%;
+      }
+
+      .panel-header,
+      form,
+      .gallery-wrap {
+        padding: 14px;
+      }
+
+      .gallery-title {
+        display: grid;
+        align-items: start;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .secondary {
+        width: 100%;
+      }
+
+      .modal {
+        padding: 10px;
+      }
+
+      .modal-card {
+        max-height: calc(100vh - 20px);
+        border-radius: 20px;
+      }
+
+      .modal-image-wrap img {
+        max-height: calc(100vh - 184px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="top">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <h1 id="mainTitle" contenteditable="true" spellcheck="false" aria-label="화면 제목 직접 편집">우리 학교 구석구석</h1>
+          <p>사진을 등록하면 오른쪽 큰 화면에 차곡차곡 모여요.</p>
+        </div>
+      </div>
+      <div class="count-badge" aria-live="polite">
+        등록된 삽화
+        <span id="count">0</span>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="panel" aria-label="삽화 등록 상태창">
+        <div class="panel-header">
+          <h2>삽화 등록하기</h2>
+          <p>사진, 제목, 학년반, 날짜를 넣어 주세요.</p>
+        </div>
+
+        <form id="artForm" novalidate>
+          <div class="field">
+            <label for="imageInput">삽화 사진</label>
+            <label class="drop-zone" id="dropZone" for="imageInput">
+              <input id="imageInput" type="file" accept="image/*">
+              <span class="upload-empty" id="uploadEmpty">
+                <span class="upload-icon" aria-hidden="true"></span>
+                <span>사진을 선택하거나 이곳에 놓기</span>
+              </span>
+              <span class="preview" id="preview">
+                <img id="previewImage" alt="선택한 삽화 미리보기">
+                <span class="preview-name" id="previewName"></span>
+              </span>
+            </label>
+          </div>
+
+          <div class="field">
+            <label for="titleInput">제목</label>
+            <input id="titleInput" type="text" placeholder="예: 봄 소풍 그림" maxlength="40">
+          </div>
+
+          <div class="field">
+            <label for="classInput">학년반</label>
+            <input id="classInput" type="text" placeholder="예: 3학년 2반" maxlength="24">
+          </div>
+
+          <div class="field">
+            <label for="dateInput">날짜</label>
+            <input id="dateInput" type="date">
+          </div>
+
+          <div class="actions">
+            <button class="primary" type="submit">등록</button>
+            <button class="secondary" id="clearButton" type="button" aria-label="입력 내용 지우기">지우기</button>
+          </div>
+
+          <div class="notice" id="notice" role="alert"></div>
+        </form>
+      </aside>
+
+      <section class="gallery-wrap" aria-label="등록된 삽화 큰 화면">
+        <div class="gallery-title">
+          <div>
+            <h2>삽화 갤러리</h2>
+            <p>등록된 사진을 누르면 크게 볼 수 있어요.</p>
+          </div>
+          <strong id="todayLabel"></strong>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          <div class="empty-card">
+            <div class="empty-picture" aria-hidden="true"></div>
+            <p>아직 등록된 삽화가 없어요.<br>왼쪽에서 첫 번째 사진을 등록해 주세요.</p>
+          </div>
+        </div>
+
+        <div class="gallery" id="gallery" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="modal-title">
+          <h3 id="modalTitle"></h3>
+          <p id="modalMeta"></p>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-delete" id="deleteModalArtwork" type="button" aria-label="현재 삽화 삭제"></button>
+          <button class="close" id="closeModal" type="button" aria-label="크게 보기 닫기"></button>
+        </div>
+      </div>
+      <div class="modal-image-wrap">
+        <img id="modalImage" alt="">
+      </div>
+      <div class="modal-bottom" id="modalCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.querySelector("#artForm");
+    const mainTitle = document.querySelector("#mainTitle");
+    const imageInput = document.querySelector("#imageInput");
+    const titleInput = document.querySelector("#titleInput");
+    const classInput = document.querySelector("#classInput");
+    const dateInput = document.querySelector("#dateInput");
+    const dropZone = document.querySelector("#dropZone");
+    const uploadEmpty = document.querySelector("#uploadEmpty");
+    const preview = document.querySelector("#preview");
+    const previewImage = document.querySelector("#previewImage");
+    const previewName = document.querySelector("#previewName");
+    const notice = document.querySelector("#notice");
+    const gallery = document.querySelector("#gallery");
+    const emptyState = document.querySelector("#emptyState");
+    const count = document.querySelector("#count");
+    const clearButton = document.querySelector("#clearButton");
+    const todayLabel = document.querySelector("#todayLabel");
+    const modal = document.querySelector("#modal");
+    const deleteModalArtwork = document.querySelector("#deleteModalArtwork");
+    const closeModal = document.querySelector("#closeModal");
+    const modalTitle = document.querySelector("#modalTitle");
+    const modalMeta = document.querySelector("#modalMeta");
+    const modalImage = document.querySelector("#modalImage");
+    const modalCaption = document.querySelector("#modalCaption");
+
+    let selectedImage = "";
+    let selectedFileName = "";
+    let activeModalArtworkId = "";
+    const artworks = [];
+    const defaultSiteTitle = "우리 학교 구석구석";
+
+    const today = new Date();
+    const todayIso = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 10);
+
+    function updateSiteTitle(value) {
+      const title = value.trim() || defaultSiteTitle;
+      mainTitle.textContent = title;
+      document.title = title;
+      localStorage.setItem("schoolGalleryTitle", title);
+    }
+
+    const savedSiteTitle = localStorage.getItem("schoolGalleryTitle") || defaultSiteTitle;
+    updateSiteTitle(savedSiteTitle);
+
+    dateInput.value = todayIso;
+    todayLabel.textContent = new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "short"
+    }).format(today);
+
+    function showNotice(message) {
+      notice.textContent = message;
+      notice.classList.add("show");
+    }
+
+    function hideNotice() {
+      notice.textContent = "";
+      notice.classList.remove("show");
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      return new Intl.DateTimeFormat("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }).format(new Date(`${value}T00:00:00`));
+    }
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    function loadImage(file) {
+      hideNotice();
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        showNotice("이미지 파일만 등록할 수 있어요.");
+        imageInput.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        selectedImage = reader.result;
+        selectedFileName = file.name;
+        previewImage.src = selectedImage;
+        previewName.textContent = selectedFileName;
+        preview.classList.add("active");
+        uploadEmpty.style.display = "none";
+      });
+      reader.readAsDataURL(file);
+    }
+
+    function resetForm() {
+      form.reset();
+      dateInput.value = todayIso;
+      imageInput.value = "";
+      selectedImage = "";
+      selectedFileName = "";
+      previewImage.removeAttribute("src");
+      previewName.textContent = "";
+      preview.classList.remove("active");
+      uploadEmpty.style.display = "grid";
+      hideNotice();
+    }
+
+    function renderGallery() {
+      gallery.innerHTML = "";
+      emptyState.style.display = artworks.length ? "none" : "grid";
+      count.textContent = artworks.length;
+
+      artworks.forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `${item.title} 크게 보기`);
+
+        card.innerHTML = `
+          <span class="thumb">
+            <img src="${item.image}" alt="${escapeHtml(item.title)}">
+            <button class="delete-card" type="button" aria-label="${escapeHtml(item.title)} 삭제"><span aria-hidden="true"></span></button>
+            <span class="zoom-hint" aria-hidden="true"></span>
+          </span>
+          <span class="card-info">
+            <strong class="card-title">${escapeHtml(item.title)}</strong>
+            <span class="meta">
+              <span class="pill">${escapeHtml(item.className)}</span>
+              <span class="pill date">${formatDate(item.date)}</span>
+            </span>
+          </span>
+        `;
+
+        card.addEventListener("click", () => openModal(item));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openModal(item);
+          }
+        });
+        card.querySelector(".delete-card").addEventListener("click", (event) => {
+          event.stopPropagation();
+          deleteArtwork(item.id);
+        });
+        gallery.prepend(card);
+      });
+    }
+
+    function deleteArtwork(id) {
+      const index = artworks.findIndex((item) => item.id === id);
+      if (index === -1) return;
+      artworks.splice(index, 1);
+      renderGallery();
+    }
+
+    function openModal(item) {
+      activeModalArtworkId = item.id;
+      modalTitle.textContent = item.title;
+      modalMeta.textContent = `${item.className} · ${formatDate(item.date)}`;
+      modalCaption.textContent = item.fileName;
+      modalImage.src = item.image;
+      modalImage.alt = item.title;
+      modal.classList.add("show");
+      closeModal.focus();
+    }
+
+    function closeImageModal() {
+      modal.classList.remove("show");
+      modalImage.removeAttribute("src");
+      activeModalArtworkId = "";
+    }
+
+    imageInput.addEventListener("change", (event) => {
+      loadImage(event.target.files[0]);
+    });
+
+    dropZone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      dropZone.classList.add("dragging");
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("dragging");
+    });
+
+    dropZone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      dropZone.classList.remove("dragging");
+      const file = event.dataTransfer.files[0];
+      if (file) {
+        imageInput.files = event.dataTransfer.files;
+        loadImage(file);
+      }
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const title = titleInput.value.trim();
+      const className = classInput.value.trim();
+      const date = dateInput.value;
+
+      if (!selectedImage) {
+        showNotice("삽화 사진을 먼저 선택해 주세요.");
+        return;
+      }
+
+      if (!title || !className || !date) {
+        showNotice("제목, 학년반, 날짜를 모두 입력해 주세요.");
+        return;
+      }
+
+      artworks.push({
+        id: window.crypto && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        image: selectedImage,
+        title,
+        className,
+        date,
+        fileName: selectedFileName
+      });
+
+      renderGallery();
+      resetForm();
+    });
+
+    clearButton.addEventListener("click", resetForm);
+    deleteModalArtwork.addEventListener("click", () => {
+      if (!activeModalArtworkId) return;
+      deleteArtwork(activeModalArtworkId);
+      closeImageModal();
+    });
+    closeModal.addEventListener("click", closeImageModal);
+
+    mainTitle.addEventListener("input", () => {
+      const title = mainTitle.textContent.trim();
+      document.title = title || defaultSiteTitle;
+      localStorage.setItem("schoolGalleryTitle", title || defaultSiteTitle);
+    });
+
+    mainTitle.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        mainTitle.blur();
+      }
+    });
+
+    mainTitle.addEventListener("blur", () => {
+      updateSiteTitle(mainTitle.textContent);
+    });
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeImageModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("show")) {
+        closeImageModal();
+      }
+    });
+  </script>
+</body>
+</html>
