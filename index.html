@@ -1014,6 +1014,7 @@
     let selectedFileName = "";
     let activeModalArtworkId = "";
     let artworks = [];
+    const deletedArtworkIds = new Set();
 
     const today = new Date();
     const todayIso = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
@@ -1305,7 +1306,7 @@
         });
       } catch (error) {
         console.error(error);
-        showNotice(`제목 저장 실패: ${friendlySaveError(error)}`);
+        showNotice(`저장 실패: ${friendlySaveError(error)}`);
       }
     }
 
@@ -1327,6 +1328,9 @@
           if (setting.kind === "siteTitle" && setting.section === currentSection) {
             updateSiteTitle(setting.value);
           }
+          if (setting.kind === "deletedArtwork" && setting.section === currentSection) {
+            deletedArtworkIds.add(setting.value);
+          }
         });
       } catch (error) {
         if (!String(error.message || "").includes("Collection not found")) {
@@ -1339,7 +1343,10 @@
       try {
         showNotice(`${getSectionName(currentSection)} 사진을 불러오는 중이에요...`);
         const data = await apiJson(`/items/${encodeURIComponent(collectionName)}?limit=200`);
-        artworks = (data.items || []).map(normalizeArtwork).reverse();
+        artworks = (data.items || [])
+          .map(normalizeArtwork)
+          .filter((item) => !deletedArtworkIds.has(item.id))
+          .reverse();
         renderGallery();
         hideNotice();
       } catch (error) {
@@ -1384,18 +1391,45 @@
         });
         card.querySelector(".delete-card").addEventListener("click", (event) => {
           event.stopPropagation();
-          hideArtworkFromScreen(item.id);
+          deleteArtwork(item.id);
         });
         gallery.prepend(card);
       });
     }
 
-    function hideArtworkFromScreen(id) {
+    function removeArtworkFromView(id) {
       const index = artworks.findIndex((item) => item.id === id);
       if (index === -1) return;
       artworks.splice(index, 1);
       renderGallery();
-      showNotice("현재 화면에서만 숨겼어요. 새로고침하면 데이터 서버의 사진이 다시 보입니다.");
+    }
+
+    async function deleteArtwork(id) {
+      const item = artworks.find((artwork) => artwork.id === id);
+      if (!item) return;
+
+      try {
+        showNotice("삽화를 삭제하는 중이에요...");
+        try {
+          await apiJson(`/items/${encodeURIComponent(collectionName)}/${encodeURIComponent(id)}`, {
+            method: "DELETE"
+          });
+          if (item.storagePath) {
+            try {
+              await fetch(`${apiBase}/storage/files/${encodeStoragePath(item.storagePath)}`, { method: "DELETE" });
+            } catch (_) {}
+          }
+        } catch (_) {
+          await saveSetting("deletedArtwork", currentSection, id);
+        }
+        deletedArtworkIds.add(id);
+        removeArtworkFromView(id);
+        if (activeModalArtworkId === id) closeImageModal();
+        showNotice("삭제했어요. 새로고침해도 목록에 다시 보이지 않습니다.");
+      } catch (error) {
+        console.error(error);
+        showNotice(`삭제 실패: ${friendlySaveError(error)}`);
+      }
     }
 
     function openModal(item) {
@@ -1507,8 +1541,7 @@
     clearButton.addEventListener("click", resetForm);
     deleteModalArtwork.addEventListener("click", () => {
       if (!activeModalArtworkId) return;
-      hideArtworkFromScreen(activeModalArtworkId);
-      closeImageModal();
+      deleteArtwork(activeModalArtworkId);
     });
     closeModal.addEventListener("click", closeImageModal);
 
