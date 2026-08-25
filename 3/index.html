@@ -161,10 +161,20 @@
       box-shadow: 0 12px 26px rgba(251, 146, 60, 0.22);
     }
 
-    .section-link[contenteditable="true"] {
+    .section-label[contenteditable="true"] {
+      display: inline-block;
+      min-width: 4.5em;
+      max-width: 100%;
+      padding: 2px 4px;
+      border-radius: 8px;
       cursor: text;
       user-select: text;
       -webkit-user-select: text;
+    }
+
+    .section-label:focus {
+      outline: 3px solid rgba(14, 165, 233, 0.22);
+      background: rgba(255, 255, 255, 0.62);
     }
 
     .workspace {
@@ -852,22 +862,22 @@
 
     <nav class="section-nav" aria-label="사진 업로드 링크 선택">
       <span class="section-item">
-        <a class="section-link" data-section-link="1" href="https://aiedue.ddns.net/pic/1/" contenteditable="true" spellcheck="false" aria-label="1번 링크 이름 직접 편집">1번 링크</a>
+        <a class="section-link" data-section-link="1" href="https://aiedue.ddns.net/pic/1/"><span class="section-label" data-section-label="1" contenteditable="true" spellcheck="false" aria-label="1번 링크 이름 직접 편집">1번 링크</span></a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="2" href="https://aiedue.ddns.net/pic/2/" contenteditable="true" spellcheck="false" aria-label="2번 링크 이름 직접 편집">2번 링크</a>
+        <a class="section-link" data-section-link="2" href="https://aiedue.ddns.net/pic/2/"><span class="section-label" data-section-label="2" contenteditable="true" spellcheck="false" aria-label="2번 링크 이름 직접 편집">2번 링크</span></a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="3" href="https://aiedue.ddns.net/pic/3/" contenteditable="true" spellcheck="false" aria-label="3번 링크 이름 직접 편집">3번 링크</a>
+        <a class="section-link" data-section-link="3" href="https://aiedue.ddns.net/pic/3/"><span class="section-label" data-section-label="3" contenteditable="true" spellcheck="false" aria-label="3번 링크 이름 직접 편집">3번 링크</span></a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="4" href="https://aiedue.ddns.net/pic/4/" contenteditable="true" spellcheck="false" aria-label="4번 링크 이름 직접 편집">4번 링크</a>
+        <a class="section-link" data-section-link="4" href="https://aiedue.ddns.net/pic/4/"><span class="section-label" data-section-label="4" contenteditable="true" spellcheck="false" aria-label="4번 링크 이름 직접 편집">4번 링크</span></a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="5" href="https://aiedue.ddns.net/pic/5/" contenteditable="true" spellcheck="false" aria-label="5번 링크 이름 직접 편집">5번 링크</a>
+        <a class="section-link" data-section-link="5" href="https://aiedue.ddns.net/pic/5/"><span class="section-label" data-section-label="5" contenteditable="true" spellcheck="false" aria-label="5번 링크 이름 직접 편집">5번 링크</span></a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="6" href="https://aiedue.ddns.net/pic/6/" contenteditable="true" spellcheck="false" aria-label="6번 링크 이름 직접 편집">6번 링크</a>
+        <a class="section-link" data-section-link="6" href="https://aiedue.ddns.net/pic/6/"><span class="section-label" data-section-label="6" contenteditable="true" spellcheck="false" aria-label="6번 링크 이름 직접 편집">6번 링크</span></a>
       </span>
     </nav>
 
@@ -1041,8 +1051,8 @@
       const cleanName = name.trim() || sectionNames[section] || `${section}번 링크`;
       localStorage.setItem(storageSectionNameKey(section), cleanName);
       sectionNames[section] = cleanName;
-      const link = document.querySelector(`[data-section-link="${section}"]`);
-      if (link) link.textContent = cleanName;
+      const label = document.querySelector(`[data-section-label="${section}"]`);
+      if (label) label.textContent = cleanName;
       if (section === currentSection) {
         const currentTitle = mainTitle.textContent.trim();
         if (!currentTitle || currentTitle === previousDefault) {
@@ -1062,38 +1072,46 @@
     document.querySelectorAll("[data-section-link]").forEach((link) => {
       const section = link.getAttribute("data-section-link");
       sectionNames[section] = getSectionName(section);
-      link.textContent = sectionNames[section];
+      const label = document.querySelector(`[data-section-label="${section}"]`);
+      if (label) {
+        label.textContent = sectionNames[section];
+        label.dataset.previousName = sectionNames[section];
+      }
       link.href = sectionUrl(section);
-      link.dataset.previousName = sectionNames[section];
       if (section === currentSection) {
         link.classList.add("active");
         link.setAttribute("aria-current", "page");
       }
-      link.addEventListener("click", (event) => {
+    });
+
+    document.querySelectorAll("[data-section-label]").forEach((label) => {
+      const section = label.getAttribute("data-section-label");
+      label.addEventListener("click", (event) => {
         event.preventDefault();
-        link.focus();
+        event.stopPropagation();
+        label.focus();
       });
-      link.addEventListener("focus", () => {
-        link.dataset.previousName = getSectionName(section);
+      label.addEventListener("focus", () => {
+        label.dataset.previousName = getSectionName(section);
       });
-      link.addEventListener("keydown", (event) => {
+      label.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
           event.preventDefault();
-          link.blur();
+          label.blur();
         }
         if (event.key === "Escape") {
           event.preventDefault();
-          link.textContent = link.dataset.previousName || getSectionName(section);
-          link.blur();
+          label.textContent = label.dataset.previousName || getSectionName(section);
+          label.blur();
         }
       });
-      link.addEventListener("blur", () => {
-        const nextName = link.textContent.trim();
+      label.addEventListener("blur", () => {
+        const nextName = label.textContent.trim();
         setSectionName(section, nextName);
-        if (getSectionName(section) !== link.dataset.previousName) {
+        if (getSectionName(section) !== label.dataset.previousName) {
           saveSetting("sectionName", section, getSectionName(section));
         }
-        link.dataset.previousName = getSectionName(section);
+        label.dataset.previousName = getSectionName(section);
       });
     });
 
