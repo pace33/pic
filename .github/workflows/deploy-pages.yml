@@ -37,7 +37,9 @@ jobs:
           tar --exclude='./.git' --exclude='./.github' --exclude='./_site' -cf - . | tar -xf - -C _site
           for section in 1 2 3 4 5 6 7; do
             mkdir -p "_site/$section"
-            cp _site/index.html "_site/$section/index.html"
+            if [ ! -f "_site/$section/index.html" ]; then
+              cp _site/index.html "_site/$section/index.html"
+            fi
           done
           if [ -n "${{ vars.PAGES_CUSTOM_DOMAIN }}" ]; then
             printf '%s\n' "${{ vars.PAGES_CUSTOM_DOMAIN }}" > _site/CNAME
