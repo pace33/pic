@@ -120,7 +120,7 @@
 
     .section-nav {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 10px;
       margin: 0 0 18px;
     }
@@ -845,7 +845,6 @@
       <a class="section-link" data-section-link="4" href="https://aiedue.ddns.net/pic/4/">4번 링크</a>
       <a class="section-link" data-section-link="5" href="https://aiedue.ddns.net/pic/5/">5번 링크</a>
       <a class="section-link" data-section-link="6" href="https://aiedue.ddns.net/pic/6/">6번 링크</a>
-      <a class="section-link" data-section-link="7" href="https://aiedue.ddns.net/pic/7/">7번 링크</a>
     </nav>
 
     <section class="workspace">
@@ -966,8 +965,7 @@
       "3": "3번 링크",
       "4": "4번 링크",
       "5": "5번 링크",
-      "6": "6번 링크",
-      "7": "7번 링크"
+      "6": "6번 링크"
     };
     const defaultSiteTitle = "우리 학교 구석구석";
     const currentSection = detectSection();
@@ -988,9 +986,9 @@
       .slice(0, 10);
 
     function detectSection() {
-      const pathMatch = location.pathname.match(/\/pic\/([1-7])\/?$/) || location.pathname.match(/\/([1-7])\/?$/);
+      const pathMatch = location.pathname.match(/\/pic\/([1-6])\/?$/) || location.pathname.match(/\/([1-6])\/?$/);
       const querySection = new URLSearchParams(location.search).get("section");
-      return (pathMatch && pathMatch[1]) || (/^[1-7]$/.test(querySection || "") ? querySection : "1");
+      return (pathMatch && pathMatch[1]) || (/^[1-6]$/.test(querySection || "") ? querySection : "1");
     }
 
     function sectionUrl(section) {
