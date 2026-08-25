@@ -1018,6 +1018,7 @@
     const defaultSiteTitle = "우리 학교 구석구석";
     const currentSection = detectSection();
     const collectionName = `photos_${currentSection}`;
+    const settingsCollectionName = "site_settings";
     const apiBase = location.hostname === "aiedue.ddns.net" ? "/pic-db/db-api" : "https://aiedue.ddns.net/pic-db/db-api";
     const maxUploadDimension = 1600;
     const maxOriginalUploadBytes = 1800000;
@@ -1078,7 +1079,10 @@
 
     function editSectionName(section) {
       const nextName = prompt("링크 이름을 입력하세요.", getSectionName(section));
-      if (nextName !== null) setSectionName(section, nextName);
+      if (nextName !== null) {
+        setSectionName(section, nextName);
+        saveSetting("sectionName", section, getSectionName(section));
+      }
     }
 
     function updateSiteTitle(value) {
@@ -1297,6 +1301,55 @@
       return await response.json();
     }
 
+    async function saveSetting(kind, section, value) {
+      const cleanValue = String(value || "").trim();
+      if (!cleanValue) return;
+
+      try {
+        await apiJson(`/items/${encodeURIComponent(settingsCollectionName)}`, {
+          method: "POST",
+          body: JSON.stringify({
+            data: {
+              kind,
+              section,
+              value: cleanValue,
+              pagePath: `/pic/${section}`,
+              createdAt: new Date().toISOString()
+            }
+          })
+        });
+      } catch (error) {
+        console.error(error);
+        showNotice(`제목 저장 실패: ${friendlySaveError(error)}`);
+      }
+    }
+
+    async function loadSiteSettings() {
+      try {
+        const data = await apiJson(`/items/${encodeURIComponent(settingsCollectionName)}?limit=300`);
+        const settings = (data.items || [])
+          .map((record) => {
+            const setting = record.data || {};
+            return { id: record.id, ...setting, savedAt: setting.createdAt || record.created_at };
+          })
+          .sort((a, b) => new Date(a.savedAt || 0) - new Date(b.savedAt || 0));
+
+        settings.forEach((setting) => {
+          if (!/^[1-6]$/.test(setting.section || "") || !setting.value) return;
+          if (setting.kind === "sectionName") {
+            setSectionName(setting.section, setting.value);
+          }
+          if (setting.kind === "siteTitle" && setting.section === currentSection) {
+            updateSiteTitle(setting.value);
+          }
+        });
+      } catch (error) {
+        if (!String(error.message || "").includes("Collection not found")) {
+          console.error(error);
+        }
+      }
+    }
+
     async function loadArtworks() {
       try {
         showNotice(`${getSectionName(currentSection)} 사진을 불러오는 중이에요...`);
@@ -1489,6 +1542,7 @@
 
     mainTitle.addEventListener("blur", () => {
       updateSiteTitle(mainTitle.textContent);
+      saveSetting("siteTitle", currentSection, mainTitle.textContent);
     });
 
     modal.addEventListener("click", (event) => {
@@ -1501,7 +1555,10 @@
       }
     });
 
-    loadArtworks();
+    (async () => {
+      await loadSiteSettings();
+      await loadArtworks();
+    })();
   </script>
 </body>
 </html>
