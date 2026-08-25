@@ -136,7 +136,7 @@
       justify-content: center;
       min-height: 48px;
       width: 100%;
-      padding: 10px 34px 10px 10px;
+      padding: 10px;
       border: 3px solid #ffffff;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.82);
@@ -161,28 +161,10 @@
       box-shadow: 0 12px 26px rgba(251, 146, 60, 0.22);
     }
 
-    .section-edit {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      display: grid;
-      place-items: center;
-      width: 36px;
-      height: 24px;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.9);
-      color: #0f766e;
-      cursor: pointer;
-      font-size: 0.68rem;
-      font-weight: 1000;
-      box-shadow: 0 4px 10px rgba(15, 118, 110, 0.18);
-    }
-
-    .section-edit:hover,
-    .section-edit:focus {
-      background: #ccfbf1;
-      outline: 3px solid rgba(20, 184, 166, 0.22);
+    .section-link[contenteditable="true"] {
+      cursor: text;
+      user-select: text;
+      -webkit-user-select: text;
     }
 
     .workspace {
@@ -870,28 +852,22 @@
 
     <nav class="section-nav" aria-label="사진 업로드 링크 선택">
       <span class="section-item">
-        <a class="section-link" data-section-link="1" href="https://aiedue.ddns.net/pic/1/">1번 링크</a>
-        <button class="section-edit" data-section-edit="1" type="button" aria-label="1번 링크 이름 수정">수정</button>
+        <a class="section-link" data-section-link="1" href="https://aiedue.ddns.net/pic/1/" contenteditable="true" spellcheck="false" aria-label="1번 링크 이름 직접 편집">1번 링크</a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="2" href="https://aiedue.ddns.net/pic/2/">2번 링크</a>
-        <button class="section-edit" data-section-edit="2" type="button" aria-label="2번 링크 이름 수정">수정</button>
+        <a class="section-link" data-section-link="2" href="https://aiedue.ddns.net/pic/2/" contenteditable="true" spellcheck="false" aria-label="2번 링크 이름 직접 편집">2번 링크</a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="3" href="https://aiedue.ddns.net/pic/3/">3번 링크</a>
-        <button class="section-edit" data-section-edit="3" type="button" aria-label="3번 링크 이름 수정">수정</button>
+        <a class="section-link" data-section-link="3" href="https://aiedue.ddns.net/pic/3/" contenteditable="true" spellcheck="false" aria-label="3번 링크 이름 직접 편집">3번 링크</a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="4" href="https://aiedue.ddns.net/pic/4/">4번 링크</a>
-        <button class="section-edit" data-section-edit="4" type="button" aria-label="4번 링크 이름 수정">수정</button>
+        <a class="section-link" data-section-link="4" href="https://aiedue.ddns.net/pic/4/" contenteditable="true" spellcheck="false" aria-label="4번 링크 이름 직접 편집">4번 링크</a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="5" href="https://aiedue.ddns.net/pic/5/">5번 링크</a>
-        <button class="section-edit" data-section-edit="5" type="button" aria-label="5번 링크 이름 수정">수정</button>
+        <a class="section-link" data-section-link="5" href="https://aiedue.ddns.net/pic/5/" contenteditable="true" spellcheck="false" aria-label="5번 링크 이름 직접 편집">5번 링크</a>
       </span>
       <span class="section-item">
-        <a class="section-link" data-section-link="6" href="https://aiedue.ddns.net/pic/6/">6번 링크</a>
-        <button class="section-edit" data-section-edit="6" type="button" aria-label="6번 링크 이름 수정">수정</button>
+        <a class="section-link" data-section-link="6" href="https://aiedue.ddns.net/pic/6/" contenteditable="true" spellcheck="false" aria-label="6번 링크 이름 직접 편집">6번 링크</a>
       </span>
     </nav>
 
@@ -1067,21 +1043,11 @@
       sectionNames[section] = cleanName;
       const link = document.querySelector(`[data-section-link="${section}"]`);
       if (link) link.textContent = cleanName;
-      const editButton = document.querySelector(`[data-section-edit="${section}"]`);
-      if (editButton) editButton.setAttribute("aria-label", `${cleanName} 이름 수정`);
       if (section === currentSection) {
         const currentTitle = mainTitle.textContent.trim();
         if (!currentTitle || currentTitle === previousDefault) {
           updateSiteTitle(`${cleanName} · ${defaultSiteTitle}`);
         }
-      }
-    }
-
-    function editSectionName(section) {
-      const nextName = prompt("링크 이름을 입력하세요.", getSectionName(section));
-      if (nextName !== null) {
-        setSectionName(section, nextName);
-        saveSetting("sectionName", section, getSectionName(section));
       }
     }
 
@@ -1098,36 +1064,37 @@
       sectionNames[section] = getSectionName(section);
       link.textContent = sectionNames[section];
       link.href = sectionUrl(section);
-      link.title = "이름을 바꾸려면 두 번 클릭";
-      let linkClickTimer = null;
+      link.dataset.previousName = sectionNames[section];
       if (section === currentSection) {
         link.classList.add("active");
         link.setAttribute("aria-current", "page");
       }
       link.addEventListener("click", (event) => {
         event.preventDefault();
-        clearTimeout(linkClickTimer);
-        linkClickTimer = setTimeout(() => {
-          location.href = link.href;
-        }, 220);
+        link.focus();
       });
-      link.addEventListener("dblclick", (event) => {
-        event.preventDefault();
-        clearTimeout(linkClickTimer);
-        editSectionName(section);
+      link.addEventListener("focus", () => {
+        link.dataset.previousName = getSectionName(section);
       });
       link.addEventListener("keydown", (event) => {
-        if (event.key === "F2") {
+        if (event.key === "Enter") {
           event.preventDefault();
-          editSectionName(section);
+          link.blur();
+        }
+        if (event.key === "Escape") {
+          event.preventDefault();
+          link.textContent = link.dataset.previousName || getSectionName(section);
+          link.blur();
         }
       });
-    });
-
-    document.querySelectorAll("[data-section-edit]").forEach((button) => {
-      const section = button.getAttribute("data-section-edit");
-      button.setAttribute("aria-label", `${getSectionName(section)} 이름 수정`);
-      button.addEventListener("click", () => editSectionName(section));
+      link.addEventListener("blur", () => {
+        const nextName = link.textContent.trim();
+        setSectionName(section, nextName);
+        if (getSectionName(section) !== link.dataset.previousName) {
+          saveSetting("sectionName", section, getSectionName(section));
+        }
+        link.dataset.previousName = getSectionName(section);
+      });
     });
 
     const savedSiteTitle = localStorage.getItem(`schoolGalleryTitle:${currentSection}`) || `${getSectionName(currentSection)} · ${defaultSiteTitle}`;
