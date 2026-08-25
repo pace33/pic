@@ -1219,7 +1219,10 @@
       try {
         showNotice(`${sectionNames[currentSection]} 사진을 불러오는 중이에요...`);
         const data = await apiJson(`/items/${encodeURIComponent(collectionName)}?limit=200`);
-        artworks = (data.items || []).map(normalizeArtwork).reverse();
+        artworks = (data.items || [])
+          .filter((record) => (record.data || record).title !== "codex-connectivity-test")
+          .map(normalizeArtwork)
+          .reverse();
         renderGallery();
         hideNotice();
       } catch (error) {
