@@ -179,7 +179,7 @@
 
     .workspace {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 1fr 340px;
       gap: 22px;
       align-items: start;
     }
@@ -882,6 +882,25 @@
     </nav>
 
     <section class="workspace">
+      <section class="gallery-wrap" aria-label="등록된 삽화 큰 화면">
+        <div class="gallery-title">
+          <div>
+            <h2>삽화 갤러리</h2>
+            <p>등록된 사진을 누르면 크게 볼 수 있어요.</p>
+          </div>
+          <strong id="todayLabel"></strong>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          <div class="empty-card">
+            <div class="empty-picture" aria-hidden="true"></div>
+            <p>아직 등록된 삽화가 없어요.<br>오른쪽에서 첫 번째 사진을 등록해 주세요.</p>
+          </div>
+        </div>
+
+        <div class="gallery" id="gallery" aria-live="polite"></div>
+      </section>
+
       <aside class="panel" aria-label="삽화 등록 상태창">
         <div class="panel-header">
           <h2>삽화 등록하기</h2>
@@ -927,25 +946,6 @@
           <div class="notice" id="notice" role="alert"></div>
         </form>
       </aside>
-
-      <section class="gallery-wrap" aria-label="등록된 삽화 큰 화면">
-        <div class="gallery-title">
-          <div>
-            <h2>삽화 갤러리</h2>
-            <p>등록된 사진을 누르면 크게 볼 수 있어요.</p>
-          </div>
-          <strong id="todayLabel"></strong>
-        </div>
-
-        <div class="empty-state" id="emptyState">
-          <div class="empty-card">
-            <div class="empty-picture" aria-hidden="true"></div>
-            <p>아직 등록된 삽화가 없어요.<br>왼쪽에서 첫 번째 사진을 등록해 주세요.</p>
-          </div>
-        </div>
-
-        <div class="gallery" id="gallery" aria-live="polite"></div>
-      </section>
     </section>
   </main>
 
