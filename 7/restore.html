@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>사진 보관함 복구</title>
+  <link rel="stylesheet" href="./styles.css?v=20261110-photo-verify">
+  <style>
+    body{min-height:100svh;display:grid;place-items:center;padding:20px;background:#f3f9fa}
+    main{width:min(100%,560px);padding:clamp(22px,5vw,40px);border-radius:20px;background:white;box-shadow:0 8px 40px #203e4b18;box-sizing:border-box}
+    h1{font-size:1.7rem;margin:0 0 18px;color:#17363d}p{line-height:1.8;color:#46575c}
+    .button{min-height:52px;width:100%;margin-top:18px}a{display:block;margin-top:20px;color:#147c75;text-align:center}
+    #status{min-height:3.6em}small{line-height:1.7;display:block;color:#66777d}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>사진 보관함 복구</h1>
+    <p>서버에 남아 있는 <strong>촬영 원본</strong>을 이 기기의 기존 사진 보관함에 넣어요. 꾸며진 3컷 완성본을 새로 만드는 작업은 아니에요.</p>
+    <small>기존 사진은 지우거나 덮어쓰지 않아요. 같은 복구 링크를 다시 눌러도 사진이 중복으로 생기지 않아요.<br>사진 보관함을 사용할 기기의 브라우저에서 실행해 주세요.</small>
+    <p id="status" role="status" aria-live="polite">복구 링크를 확인하고 있어요.</p>
+    <button id="restore" type="button" class="button primary" disabled>사진 보관함에 복구</button>
+    <a id="gallery-link" href="./#gallery">기존 사진 보관함 열기</a>
+  </main>
+  <script type="module" src="./restore.mjs?v=20261111-recovery-v1"></script>
+</body>
+</html>
