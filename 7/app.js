@@ -1861,4 +1861,8 @@ updateCameraDirection();
 loadSavedTitle();
 syncTitleFromInput();
 renderThumbs();
-renderGallery().catch(console.error);
+if (window.location.hash === "#gallery") {
+  openGallery().catch(console.error);
+} else {
+  renderGallery().catch(console.error);
+}
